@@ -5,10 +5,9 @@ const strictify = require("json-strictify");
 const jsons = strictify.default;
 const unzip = require("./unzip");
 const download = require("./download");
-
+download("https://donnees.roulez-eco.fr/opendata/instantane", "./PrixCarburants_instantane.zip")
 async function convert() {
 
-    download("https://donnees.roulez-eco.fr/opendata/instantane ", "./PrixCarburants_instantane.zip")
     await unzip();
     let xml_string = fs.readFileSync("PrixCarburants_instantane.xml", "utf-8");
     var bdd = { dt: [] };
