@@ -20,7 +20,7 @@ async function convert() {
             dt = "0" + dt
         }
 
-        bdd.dt.push({ id: dt, pdv: [] });
+        bdd.dt.push({ id: dt, list: [] });
         x++;
     }
 
@@ -33,7 +33,7 @@ async function convert() {
             x = 0;
             for(const o of bdd.dt) {
                 if(o["id"] === cp) {
-                    bdd.dt[x]["pdv"].push({ list: i });
+                    bdd.dt[x]["list"].push({ pdv: i });
                 }
                 x++;
             }

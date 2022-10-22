@@ -5,7 +5,7 @@ const app = express();
 const geo = new Geocoding;
 const rdata = fs.readFileSync("bdd.json");
 const data = JSON.parse(rdata);
-var station_liste = [];
+let station_liste = [];
 
 function order_array(a, b) {
 
@@ -43,15 +43,15 @@ app.get("/getstations", async function(req, res) {
     if(position === undefined) {
 
         for(const i of data) {
-            for(const station of i.pdv) {
+            for(const station of i.list) {
                 /* 
                 * On divise la latitude et longitude des stations-service dans la bdd car elle
-                * est donnée 100 000 fois + grande que normalement.
+                * est donnée 100 000 fois + grande que normalement (format PTV_GEODECIMAL).
                 * + On check la distance entre la station-service et l'utilisateur pour pouvoir comparé
                 * avec la distance max que l'utilisateur demande.
                 */
-                const stlat = Number(station.list.ATTR.latitude) / 100000,
-                stlong = Number(station.list.ATTR.longitude) / 100000,
+                const stlat = Number(station.pdv.ATTR.latitude) / 100000,
+                stlong = Number(station.pdv.ATTR.longitude) / 100000,
                 distance_calcul = geo.getDistance(lat, long, stlat, stlong);
 
                 if(distance_calcul.unit == "km") {
@@ -102,10 +102,10 @@ app.get("/getstations", async function(req, res) {
         const dt = position.properties.context.slice(0, 2);
         for(const i of data) {
             if(i.id  === dt) {
-                for(const station of i.pdv) {
+                for(const station of i.list) {
 
-                    const stlat = Number(station.list.ATTR.latitude) / 100000,
-                    stlong = Number(station.list.ATTR.longitude) / 100000,
+                    const stlat = Number(station.pdv.ATTR.latitude) / 100000,
+                    stlong = Number(station.pdv.ATTR.longitude) / 100000,
                     distance_calcul = geo.getDistance(lat, long, stlat, stlong);
 
                     if(distance_calcul.unit == "km") {
